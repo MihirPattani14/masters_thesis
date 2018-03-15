@@ -1,0 +1,335 @@
+%%% PREAMBLE
+
+\documentclass[11pt]{report} % This is in order to have the chapter feature and page numbers in the same location on even and odd pages. 
+    % Acceptable font sizes are 10 to 12 pts
+    
+    \usepackage[papersize={8.5 in, 11 in}, nohead, includeheadfoot, left=1.5 in, right = 1 in, vmargin= 1 in]{geometry}
+    % The options above are to set the paper size (as per page 11 of the guidelines and the margins. Includefoot is to make sure that nothing
+    % gets printed on the margins. The statutory margins are set on page 5. 
+    
+    \usepackage[doublespacing]{setspace} % Needed to set double-spacing for the main document, but needs more adhoc commands to
+                                    % use single spacing for tables, etc.
+    \usepackage{calc}
+    
+    % For the signature boxes and much better looking tables
+    \usepackage{array} % Also for better arrays (eg matrices) in maths
+    \usepackage{tabularx}
+    \usepackage{booktabs}
+    
+    % Commands to format the Table of Contents, List of Tables and List of Illustrations, as per the Wharton Template
+    \usepackage{tocloft}
+    \setcounter{tocdepth}{1} % Only show chapters and sections in ToC
+    
+    % Change names and format of tables
+    \renewcommand{\contentsname}{TABLE OF CONTENTS}
+    \renewcommand{\cfttoctitlefont}{\large\hfill}
+    \renewcommand{\cftaftertoctitle}{\hfill}
+    \renewcommand{\cftbeforetoctitleskip}{-21 pt} % The key value here is the -21 pts, I got to it by old fashioned measuring with a ruler....
+    \renewcommand{\listtablename}{LIST OF TABLES}
+    \renewcommand{\cftlottitlefont}{\large\hfill}
+    \renewcommand{\cftafterlottitle}{\hfill}
+    \renewcommand{\cftbeforelottitleskip}{-21 pt} % The key value here is the -21 pts, I got to it by old fashioned measuring with a ruler....
+    \renewcommand{\listfigurename}{LIST OF ILLUSTRATIONS}
+    \renewcommand{\cftloftitlefont}{\large\hfill}
+    \renewcommand{\cftafterloftitle}{\hfill}
+    \renewcommand{\cftbeforeloftitleskip}{-21 pt} % The key value here is the -21 pts, I got to it by old fashioned measuring with a ruler....
+    
+    % Format chapters (dots, including the word chapter, etc.)
+    \renewcommand{\cftchapfont}{\upshape}
+    \renewcommand{\cftchapleader}{\upshape\cftdotfill{\cftdotsep}}
+    \renewcommand{\cftchappagefont}{\upshape}
+    \renewcommand{\cftchappresnum}{CHAPTER }
+    \renewcommand{\cftchapaftersnum}{ :}
+    \newlength{\mylen}   % a "scratch" length
+    \settowidth{\mylen}{\cftchappresnum \cftchapaftersnum} % extra space
+    \addtolength{\cftchapnumwidth}{\mylen} % add the extra space
+    
+    % Format tables in LoT
+    \renewcommand{\cfttableader}{\cftdotfill{\cftdotsep}}
+    \renewcommand{\cfttabpresnum}{TABLE }
+    \renewcommand{\cfttabaftersnum}{ :}
+    \newlength{\mylent}   % a "scratch" length
+    \settowidth{\mylent}{\cfttabpresnum} % extra space
+    \addtolength{\cfttabnumwidth}{\mylent} % add the extra space
+    \usepackage{remreset}
+    
+    % Format Illusstrations in LoF
+    \renewcommand{\cftfigleader}{\cftdotfill{\cftdotsep}}
+    \renewcommand{\cftfigpresnum}{FIGURE }
+    \renewcommand{\cftfigaftersnum}{ :}
+    \newlength{\mylenf}   % a "scratch" length
+    \settowidth{\mylenf}{\cftfigpresnum} % extra space
+    \addtolength{\cftfignumwidth}{\mylenf} % add the extra space
+    
+    % Commands (more further down, at preliminary, main and appendix) to change the formatting of chapter headings
+    \usepackage[compact]{titlesec}
+    \renewcommand{\beforetitleunit}{0 pt}
+    \titleformat{\section}[hang]{\large}{\thesection.}{6 pt}{}
+    \titleformat{\subsection}[hang]{\normalsize\itshape}{\thesubsection.}{6 pt}{}
+    \titlespacing*{\section}{0pt}{0pt}{0pt}
+    \titlespacing*{\subsection}{0pt}{0pt}{0pt}
+    
+    \usepackage{parskip} % To allow for better management of the Dutch paragraph style
+    \usepackage{url} % To allow for better typing of the url in the Creative Commons part of the copyright
+    \usepackage{natbib} % allows the author-date citation system
+    \bibpunct{(}{)}{;}{a}{,}{,} % options for natbib to yield the citation style I like
+    
+    % Other packages that are not needed for the template, but I highly recommend (and all of your own packages go here to)
+    % Add them one by one to make sure they do not interfere, for instance the package subfigure clashes with this template
+    \usepackage{amssymb}
+    \usepackage{amsfonts}
+    \usepackage{amsmath}
+    \usepackage{graphicx}
+    \usepackage{longtable}
+    \usepackage{dcolumn}
+    \usepackage{tabularx}
+    \usepackage{rotating}
+    \usepackage{xtab}
+    \usepackage{paralist} % very flexible & customizable lists (eg. enumerate/itemize, etc.)
+    \usepackage{verbatim}
+    \usepackage{subfiles} % To be better able to manage large projects by compiling the separate files included in the final document
+    
+    %%% BEGIN DOCUMENT
+    
+    \begin{document}
+    % Making tables and figures numbered continuously
+    \makeatletter
+    \@removefromreset{table}{chapter}
+    \makeatother
+    \renewcommand{\thetable}{\arabic{table}}
+    \makeatletter
+    \@removefromreset{figure}{chapter}
+    \makeatother
+    \renewcommand{\thefigure}{\arabic{figure}}
+    
+    \def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi} % Defining stars for significance tables
+    
+    % Defining variables to be used throughout the document for personalization
+    \centering
+    \def\mytitle{PREDICTING SCREEN CONTENT USING ACOUSTIC SIDE CHANNELS} % Make sure this is in all caps
+    \def\myauthor{Mihir S. Pattani}
+    \def\myauthorfull{Mihir Sandeep Pattani}
+    \def\mysupervisorname{Matthew Blaze}
+    \def\mysupervisortitle{Associate Professor}
+    \newlength{\superlen}   % a "scratch" length
+    \settowidth{\superlen}{\mysupervisorname, \mysupervisortitle} % Width of signature line for supervisor
+    \def\gradchairname{Zach Ives}
+    \def\gradchairtitle{Professor}
+    \newlength{\chairlen}   % a "scratch" length
+    \settowidth{\chairlen}{\gradchairname, \gradchairtitle} % Width of signature line for supervisor
+    \newlength{\maxlen}
+    \setlength{\maxlen}{\maxof{\superlen}{\chairlen}}
+    \def\mydepartment{Computer and Information Science}
+    \def\myyear{}
+    \def\signatures{46 pt} % Space to accommodate the signatures, you can fiddle with this as you like
+    
+    %% PRELIMINARY PAGES
+    
+    \pagenumbering{roman}
+    \pagestyle{plain}
+    
+    % TITLE PAGE
+    
+    \begin{titlepage}
+    \thispagestyle{empty} % No page numbers on title page, as per Manual page 8
+    \begin{center}
+    
+    \onehalfspacing
+    \hfill
+    \LARGE{\mytitle}
+
+    \Large{\myauthor}
+    
+    A Thesis
+    
+    in 
+    
+    \mydepartment\\
+    \hfill
+
+    \large{Presented to the Faculties of the University of Pennsylvania in Partial Fulfillment of the Requirements for the Degree of Master of Science in Engineering}
+    
+    \myyear 2018\\
+    \end{center}
+    
+    \hfill \break 
+    \hfill \break
+
+    \begin{large}
+        
+    \begin{center}   
+    \renewcommand{\tabcolsep}{0 pt}
+    \begin{table}[h]
+    \centering
+    \begin{tabularx}{\maxlen}{>{\centering}X}
+    \toprule
+    \mysupervisorname, \mysupervisortitle\\ %Space between advisor and graduate chair, you can fiddle with this as you like
+    Supervisor of Thesis
+    \end{tabularx}
+    \end{table}
+    
+    \hfill \break
+
+    \begin{table}[h]
+    \centering
+    \begin{tabularx}{\maxlen}{>{\centering}X }
+    \toprule
+    \gradchairname, \gradchairtitle\\ %Space between advisor and graduate chair, you can fiddle with this as you like
+    Graduate Group Chairperson\\
+    \end{tabularx}
+    \end{table}
+    \singlespacing
+    
+    Thesis Committee % No signature necessary
+    
+    Nadia Heninger, Associate Professor
+    
+    Daniel Genkin, Post-Doctorate Reseacher
+
+    
+    \end{center}
+    \end{large}
+    \end{titlepage}
+        
+    % Changing formatting for preliminary pages (NOT OPTIONAL)
+    \newenvironment{preliminary}{}{}
+    \titleformat{\chapter}[hang]{\large\center}{\thechapter}{0 pt}{}
+    \titlespacing*{\chapter}{0pt}{-33 pt}{6 pt} % The key value here is the -33 pts, I got to it by old fashioned measuring with a ruler....
+    \begin{preliminary}
+    
+    % DEDICATION (OPTIONAL)
+    %\setcounter{page}{3}  %Makes this page Roman numeral 3. Thanks to Albert Zevelev.
+    %\begin{center}
+    %\textit{Dedicated to (optional)}
+    %\end{center}
+    
+    % ACKNOWLEDGEMENT (OPTIONAL)
+    
+    \clearpage
+    \chapter*{ACKNOWLEDGEMENT (optional)}
+    \addcontentsline{toc}{chapter}{ACKNOWLEDGEMENT} % This is to include this section in the Table of Contents
+    \begin{center}
+        \begin{minipage}{\textwidth}
+            This thesis is based on work done by me in collaboration with Daniel Genkin, Roei Schuster and Eran Tromer. I would like to thank Daniel Genkin for advising me throughout the project. I wish to thank Prof. Matt Blaze for his consistent support of our work.
+        \end{minipage}
+    \end{center}  
+    
+    % ABSTRACT
+    
+    \clearpage
+    \chapter*{\LARGE{ABSTRACT}}
+    \addcontentsline{toc}{chapter}{ABSTRACT} % This is to include this section in the Table of Contents
+    \begin{center}
+    \mytitle
+    
+%    \myauthor
+    
+%    \mysupervisorname
+    
+    \end{center}
+    
+    \hfill
+
+    \begin{center}
+        \begin{minipage}{\textwidth}
+            We studied acoustic emanations from computer screens and discovered that they could be used to obtain information about content displayed on the screen. We were able to record the acoustic noise using webcams, cellphones and specialised microsphones placed next to the screens as well as from a distance of 
+
+            We show that the subtle acoustic noises emanating from within computer screens can beused to detect the content displayed on the screen.  This sound can be picked up by ordi-nary microphones built into webcams or screens; and is inadvertently transmitted to otherparties, e.g., during a videoconference call or archived recordings.  It can also be recordedby  smartphone  on  a  desk  next  to  the  screen,  or  from  as  far  as  10-meters  away  using  aparabolic microphone.  Empirically demonstrating various attack scenarios,  we show howthis channel can be used for real-time detection of on-screen text or input into on-screenvirtual keyboards.  It can also detect what websites the other party is browsing during aconference call.Life is a Race!!!
+
+            We studied acoustic emanations from computer screens and discovered that these acoustic noises could be used to obtain information about content displayed on the screen. We used multiple 
+
+            We show that the subtle acoustic noises emanating from within computer screens can beused to detect the content displayed on the screen.  This sound can be picked up by ordi-nary microphones built into webcams or screens; and is inadvertently transmitted to otherparties, e.g., during a videoconference call or archived recordings.  It can also be recordedby  smartphone  on  a  desk  next  to  the  screen,  or  from  as  far  as  10-meters  away  using  aparabolic microphone.  Empirically demonstrating various attack scenarios,  we show howthis channel can be used for real-time detection of on-screen text or input into on-screenvirtual keyboards.  It can also detect what websites the other party is browsing during aconference call.Life is a Race!!!
+
+            
+
+        \end{minipage}
+    \end{center}
+
+    % TABLE OF CONTENTS
+    
+    \clearpage
+    \tableofcontents
+    
+    % LIST OF TABLES
+    
+    \clearpage
+    \listoftables
+    \addcontentsline{toc}{chapter}{LIST OF TABLES}
+    
+    % LIST OF ILUSTRATIONS
+    
+    \clearpage
+    \listoffigures
+    \addcontentsline{toc}{chapter}{LIST OF ILLUSTRATIONS}
+    
+    % PREFACE (OPTIONAL)
+    
+    %\clearpage
+    %\chapter*{PREFACE (optional)}
+    %\addcontentsline{toc}{chapter}{PREFACE} % This is to include this section in the Table of Contents
+    
+    \end{preliminary}
+    
+    %% MAIN TEXT
+    \newenvironment{mainf}{}{}
+    \titleformat{\chapter}[hang]{\LARGE\center}{\textbf{CHAPTER \textbf{\thechapter}}}{0 pt}{ : }
+    \titlespacing*{\chapter}{0pt}{-29 pt}{6 pt} % The key value here is the -29 pts, I got to it by old fashioned measuring with a ruler....
+    \begin{mainf}
+    
+    \newpage
+    \pagenumbering{arabic}
+    \pagestyle{plain} % This has to be repeated here because the lists change the style
+    
+    % Dutch style of paragraph formatting, i.e. no indents. 
+    \setlength{\parskip}{10 pt} % Same as Word file
+    \setlength{\parindent}{0pt}
+    
+    \chapter{Introduction}
+    \chapter{Related work}  etc.
+    \chapter{Background}
+    \chapter{Experimentation and Results}
+        \section{Attack Vectors}
+        \section{On-Screen Keyboard Snooping}
+        \section{Text Extraction}
+        \section{Website Identification}
+    \chapter{Discussion}
+    \chapter{Conclusion}
+    \end{mainf}
+    
+    %% APPENDICES (OPTIONAL)
+    \appendix
+    
+    % Changing formatting for appendices
+    \newenvironment{appendixf}{}{}
+    \titleformat{\chapter}[hang]{\large\center}{APPENDIX}{0 pt}{} % Old {APPENDIX \thechapter}{0 pt}{ : }
+    \titlespacing*{\chapter}{0pt}{-33 pt}{6 pt} % The key value here is the -33 pts, I got to it by old fashioned measuring with a ruler....
+    \begin{appendixf}
+    
+    \addtocontents{toc}{\protect\setcounter{tocdepth}{-1}} % This is to fix how appendices are shown in ToC
+    \clearpage
+    \chapter{}
+    \addtocontents{toc}{\protect\setcounter{tocdepth}{1}} % This is to bring things back to normal
+    \addcontentsline{toc}{chapter}{APPENDIX} % You have to write here everything you want the ToC to show including \thechapter if you want numbering
+    \addtocontents{toc}{\protect\setcounter{tocdepth}{-1}} % This is so sections in the appendix are not shown in the ToC
+    
+    %\subfile{Appendix}
+    
+    \addtocontents{toc}{\protect\setcounter{tocdepth}{1}} % This is to bring things back to normal
+    \end{appendixf}
+    
+    %% BIBLIOGRAPHY
+    
+    \singlespacing
+    \newenvironment{bibliof}{}{}
+    \titleformat{\chapter}[hang]{\large\center}{\thechapter}{0 pt}{}
+    \titlespacing*{\chapter}{0pt}{-25 pt}{6 pt} % The key value here is the -25 pts, I got to it by old fashioned measuring with a ruler....
+    \begin{bibliof}
+    
+    \renewcommand\bibname{BIBLIOGRAPHY}
+    \addcontentsline{toc}{chapter}{BIBLIOGRAPHY}
+    \bibliographystyle{abbrvnat}
+    \bibliography{references} % This is the filename of the bibtex bibliography file (it has to be in the same directory as the main LaTeX file)
+    \end{bibliof}
+    %% INDEX (OPTIONAL) - I do not really know how to code this, sorry
+    
+    \end{document}
